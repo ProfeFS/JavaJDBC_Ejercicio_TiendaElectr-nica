@@ -17,6 +17,7 @@ public class DatabaseConnection {
 				String user = "postgres";
 				String password = "1234";
 				instance = DriverManager.getConnection(url, user, password);
+				System.out.println("EXITO");
 			} catch (SQLException e) {
 				throw new RuntimeException("Error connecting to the database", e);
 			}
