@@ -11,17 +11,19 @@ public class DatabaseConnection {
 	}
 
 	public static Connection getConnection() {
-		if (instance == null) {
-			try {
+
+		try {
+			if (instance == null || instance.isClosed()) {
 				String url = "jdbc:postgresql://localhost:5432/db_tienda";
 				String user = "postgres";
 				String password = "1234";
 				instance = DriverManager.getConnection(url, user, password);
-				System.out.println("EXITO");
-			} catch (SQLException e) {
-				throw new RuntimeException("Error connecting to the database", e);
+				System.out.println("New connection succesfully");
 			}
+		} catch (SQLException e) {
+			throw new RuntimeException("Error connecting to the database", e);
 		}
+
 		return instance;
 	}
 
