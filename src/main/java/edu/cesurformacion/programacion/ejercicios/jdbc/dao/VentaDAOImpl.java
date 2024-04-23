@@ -15,6 +15,7 @@ public class VentaDAOImpl implements VentaDAO {
 	public void realizarVenta(int productoId, int cantidadVendida) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		DatabaseConnection.closeConnection();
 
 		try {
 			// Desactivar auto-commit para manejar la transacción manualmente
@@ -34,14 +35,12 @@ public class VentaDAOImpl implements VentaDAO {
 			}
 
 			// 2. Reducir el stock del producto
-			pstmt.clearBatch();
 			pstmt = conn.prepareStatement("UPDATE Productos SET cantidad = cantidad - ? WHERE id = ?");
 			pstmt.setInt(1, cantidadVendida);
 			pstmt.setInt(2, productoId);
 			pstmt.executeUpdate();
 
 			// 3. Registrar la venta
-			pstmt.clearBatch();
 			pstmt = conn.prepareStatement("INSERT INTO Ventas (producto_id, cantidad_vendida) VALUES (?, ?)");
 			pstmt.setInt(1, productoId);
 			pstmt.setInt(2, cantidadVendida);
