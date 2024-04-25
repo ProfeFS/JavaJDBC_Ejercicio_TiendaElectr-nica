@@ -22,7 +22,8 @@ public class ProductoDAOImpl implements ProductoDAO {
 	}
 
 	@Override
-	public void addProducto(Producto producto) {
+	public int addProducto(Producto producto) {
+		int generatedkey = 0;
 		String query = "INSERT INTO productos (nombre, categoria, precio, cantidad) VALUES (?, ?, ?, ?)";
 		try (PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, producto.getNombreProducto());
@@ -30,15 +31,17 @@ public class ProductoDAOImpl implements ProductoDAO {
 			stmt.setBigDecimal(3, producto.getPrecio());
 			stmt.setInt(4, producto.getCantidad());
 			stmt.executeUpdate();
-			
+
 			ResultSet rsIds = stmt.getGeneratedKeys();
 			if (rsIds.next()) {
-				System.out.println("Se ha creado el registro con id: " + rsIds.getInt("id"));
+				generatedkey = rsIds.getInt("id");
+				System.out.println("Se ha creado el registro con id: " + generatedkey);
 			}
 
 		} catch (SQLException e) {
-			throw new RuntimeException("Error adding product", e);
+			System.out.println("Error adding product" +  e.getMessage());
 		}
+		return generatedkey;
 	}
 
 	@Override
@@ -47,8 +50,8 @@ public class ProductoDAOImpl implements ProductoDAO {
 		String query = "SELECT id, nombre, categoria, precio, cantidad FROM Productos";
 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
 			while (rs.next()) {
-				Producto producto = new Producto(rs.getInt("id"), rs.getString("nombre"),
-						rs.getString("categoria"), rs.getBigDecimal("precio"), rs.getInt("cantidad"));
+				Producto producto = new Producto(rs.getInt("id"), rs.getString("nombre"), rs.getString("categoria"),
+						rs.getBigDecimal("precio"), rs.getInt("cantidad"));
 				productos.add(producto);
 			}
 		} catch (SQLException e) {

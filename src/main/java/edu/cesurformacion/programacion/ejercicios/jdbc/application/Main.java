@@ -6,11 +6,13 @@ import java.util.Scanner;
 import edu.cesurformacion.programacion.ejercicios.jdbc.dao.ProductoDAO;
 import edu.cesurformacion.programacion.ejercicios.jdbc.dao.ProductoDAOImpl;
 import edu.cesurformacion.programacion.ejercicios.jdbc.model.Producto;
+import edu.cesurformacion.programacion.ejercicios.jdbc.service.VentaService;
 
 public class Main {
 	public static void main(String[] args) {
 		ProductoDAO dao = new ProductoDAOImpl();
 		Scanner scanner = new Scanner(System.in);
+		VentaService ventaService = new VentaService();
 
 		// Implementar lógica para interactuar con el usuario y realizar operaciones
 		// CRUD

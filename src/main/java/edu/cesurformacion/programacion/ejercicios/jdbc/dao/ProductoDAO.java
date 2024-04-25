@@ -5,7 +5,7 @@ import java.util.List;
 import edu.cesurformacion.programacion.ejercicios.jdbc.model.Producto;
 
 public interface ProductoDAO {
-	void addProducto(Producto producto);
+	int addProducto(Producto producto);
 
 	List<Producto> getAllProductos();
 
